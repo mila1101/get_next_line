@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:06:26 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/03 14:42:56 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:33:25 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_read(int fd, char *txt)
 	char	*buff;
 	char	*temp;
 
-	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buff = ft_calloc(BUFFER_SIZE + 2, sizeof(char));
 	if (buff == NULL)
 		return (NULL);
 	b_read = read(fd, buff, BUFFER_SIZE);
@@ -62,10 +62,10 @@ char	*ft_read(int fd, char *txt)
 		b_read = read(fd, buff, BUFFER_SIZE);
 	}
 	free(buff);
-	if (b_read <= 0 && !*txt)
-	{
+	if (b_read == -1)
 		return (NULL);
-	}
+	if (b_read <= 0 && !*txt)
+		return (NULL);
 	return (txt);
 }
 
@@ -77,8 +77,8 @@ char	*ft_remaining(char *txt)
 	str = ft_strchr(txt, '\n');
 	if (str)
 	{
-		*str = '\0';
 		temp = ft_strdup(str + 1);
+		str[1] = '\0';
 	}
 	else
 		temp = NULL;
@@ -93,7 +93,7 @@ char	*get_next_line(int fd)
 	if (str == NULL)
 		str = ft_strdup("");
 	temp = ft_read(fd, str);
-	if (temp == NULL)
+	if (temp == NULL || temp[0] == '\0')
 	{
 		free(str);
 		str = NULL;
