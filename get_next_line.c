@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:06:26 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/03 14:32:46 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:42:56 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*ft_read(int fd, char *txt)
 	{
 		buff[b_read] = '\0';
 		temp = ft_strjoin(txt, buff);
+		free(txt);
 		txt = temp;
 		if (ft_strchr(txt, '\n'))
 			break ;
