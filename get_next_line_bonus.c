@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 14:06:26 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/05 19:33:11 by msoklova         ###   ########.fr       */
+/*   Created: 2024/04/05 16:56:43 by msoklova          #+#    #+#             */
+/*   Updated: 2024/04/05 19:31:12 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -89,22 +89,24 @@ char	*ft_remaining(char *txt)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[OPEN_MAX];
 	char		*temp;
 
-	if (str == NULL)
+	if (fd < 0)
+		return (NULL);
+	if (str[fd] == NULL)
 	{
-		str = ft_strdup("");
-		if (str == NULL)
+		str[fd] = ft_strdup("");
+		if (str[fd] == NULL)
 			return (NULL);
 	}
-	temp = ft_read(fd, str);
+	temp = ft_read(fd, str[fd]);
 	if (temp == NULL)
 	{
-		free(str);
-		str = NULL;
+		free(str[fd]);
+		str[fd] = NULL;
 		return (NULL);
 	}
-	str = ft_remaining(temp);
+	str[fd] = ft_remaining(temp);
 	return (temp);
 }
