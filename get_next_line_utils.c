@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:02:28 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/05 15:47:26 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:02:05 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
@@ -26,12 +28,12 @@ char	*free_strjoin(char const *s1, char const *s2)
 {
 	char	*res;
 
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
 	res = ft_strjoin(s1, s2);
+	free((void *)s1);
 	if (!res)
 		return (NULL);
-	free((void *)s1);
 	return (res);
 }
 
@@ -45,7 +47,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
-	join = (char *)malloc((ft_strlen(s1)+ ft_strlen(s2) + 1) * sizeof(char));
+	join = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!join)
 		return (NULL);
 	while (s1[i] != '\0')
@@ -54,42 +56,29 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	while (s2[j] != '\0')
-	{
-		join[i + j] = s2[j];
-		j++;
-	}
-	join[i + j] = '\0';
+		join[i++] = s2[j++];
+	join[i] = '\0';
 	return (join);
 }
 
 char	*ft_strdup(const char *s1)
 {
-	size_t	len;
-	char	*str;
+	size_t			len;
+	char			*str;
+	unsigned int	i;
 
-	len = ft_strlen(s1) + 1;
-	str = malloc(sizeof(char) * len);
-	if (!str)
-		return (0);
-	str = ft_memcpy(str, s1, len);
-	return (str);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	char		*d;
-	const char	*s;
-	size_t		i;
-
-	if (!dst && !src)
-		return (NULL);
 	i = 0;
-	d = dst;
-	s = src;
-	while (i < n)
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1) + 1;
+	str = malloc(len * sizeof(char));
+	if (!str)
+		return (NULL);
+	while (s1[i])
 	{
-		d[i] = s[i];
+		str[i] = s1[i];
 		i++;
 	}
-	return (dst);
+	str[i] = '\0';
+	return (str);
 }

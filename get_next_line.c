@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:06:26 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/05 19:33:11 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:43:48 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*ft_calloc(size_t count, size_t size)
 	if (count && size && (temp / count != size))
 		return (NULL);
 	ptr = malloc(temp);
-	if (ptr == NULL)
+	if (!ptr)
 		return (NULL);
 	a = ptr;
 	while (i < temp)
@@ -53,9 +53,12 @@ char	*ft_read(int fd, char *txt)
 	int		b_read;
 	char	*buff;
 
-	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (buff == NULL)
+	buff = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buff)
+	{
+		free(txt);
 		return (NULL);
+	}
 	b_read = read(fd, buff, BUFFER_SIZE);
 	while (b_read > 0)
 	{
@@ -66,8 +69,11 @@ char	*ft_read(int fd, char *txt)
 		b_read = read(fd, buff, BUFFER_SIZE);
 	}
 	free(buff);
-	if (b_read == -1 || (b_read <= 0 && !*txt))
+	if (b_read == -1 || (b_read == 0 && !*txt))
+	{
+		free(txt);
 		return (NULL);
+	}
 	return (txt);
 }
 
@@ -80,6 +86,8 @@ char	*ft_remaining(char *txt)
 	if (str)
 	{
 		temp = ft_strdup(str + 1);
+		if (temp == NULL)
+			return (NULL);
 		str[1] = '\0';
 	}
 	else
@@ -101,7 +109,6 @@ char	*get_next_line(int fd)
 	temp = ft_read(fd, str);
 	if (temp == NULL)
 	{
-		free(str);
 		str = NULL;
 		return (NULL);
 	}
