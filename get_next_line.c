@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:06:26 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/07 18:43:48 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:42:59 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,6 @@ char	*ft_strchr(const char *s, int c)
 	if ((char)c == '\0')
 		return ((char *)s);
 	return (NULL);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void			*ptr;
-	size_t			temp;
-	unsigned char	*a;
-	size_t			i;
-
-	i = 0;
-	temp = count * size;
-	if (count && size && (temp / count != size))
-		return (NULL);
-	ptr = malloc(temp);
-	if (!ptr)
-		return (NULL);
-	a = ptr;
-	while (i < temp)
-	{
-		a[i] = 0;
-		i++;
-	}
-	return (ptr);
 }
 
 char	*ft_read(int fd, char *txt)
@@ -95,6 +72,34 @@ char	*ft_remaining(char *txt)
 	return (temp);
 }
 
+char	*update_txt(char *txt)
+{
+	int		count;
+	char	*str;
+	char	*temp;
+
+	count = 0;
+	temp = txt;
+	while (txt[count] != '\n' && txt[count])
+		count++;
+	if (txt[count] == '\n')
+		count++;
+	str = ft_calloc(count + 1, sizeof(char));
+	if (str == NULL)
+	{
+		free(txt);
+		return (NULL);
+	}
+	count = 0;
+	while (*txt != '\n' && *txt)
+		str[count++] = *txt++;
+	if (*txt == '\n')
+		str[count++] = *txt;
+	str[count] = '\0';
+	free(temp);
+	return (str);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*str;
@@ -113,5 +118,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	str = ft_remaining(temp);
+	temp = update_txt(temp);
+	if (temp == NULL)
+	{
+		free(str);
+		str = NULL;
+		return (NULL);
+	}
 	return (temp);
 }

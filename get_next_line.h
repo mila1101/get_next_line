@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:03:43 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/05 16:58:02 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:15:01 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	*ft_calloc(size_t count, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*free_strjoin(char const *s1, char const *s2);
+char	*cut_rem(char *s);
 
 #endif

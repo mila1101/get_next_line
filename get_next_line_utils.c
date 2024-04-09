@@ -6,7 +6,7 @@
 /*   By: msoklova <msoklova@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:02:28 by msoklova          #+#    #+#             */
-/*   Updated: 2024/04/07 19:02:05 by msoklova         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:38:53 by msoklova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,27 @@ char	*ft_strdup(const char *s1)
 	}
 	str[i] = '\0';
 	return (str);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void			*ptr;
+	size_t			temp;
+	unsigned char	*a;
+	size_t			i;
+
+	i = 0;
+	temp = count * size;
+	if (count && size && (temp / count != size))
+		return (NULL);
+	ptr = malloc(temp);
+	if (!ptr)
+		return (NULL);
+	a = ptr;
+	while (i < temp)
+	{
+		a[i] = 0;
+		i++;
+	}
+	return (ptr);
 }
